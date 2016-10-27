@@ -1,0 +1,1 @@
+!function(){function n(){var n=$(".splash"),c=$(".splash").children("a");c.on("click",function(c){c.preventDefault(),n.fadeOut(500)})}function c(){$(window).scroll(function(){$(this).scrollTop()>1?$("#main-nav").addClass("sticky"):$("nav").removeClass("sticky")})}$(function(){n(),c()})}(jQuery);

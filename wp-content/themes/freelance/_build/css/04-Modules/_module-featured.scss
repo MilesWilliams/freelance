@@ -1,0 +1,20 @@
+.featured-site{
+
+  .icon{
+    background:{
+      image:url('_build/img/laptop.png');
+      position: center;
+      repeat: no-repeat;
+    }
+    height: 505px;
+    width: auto;
+    position: relative;
+    .featured-image{
+      width: 617px;
+      height: 387px;
+      position: absolute;
+      top: 42px;
+      right: 28.4%;
+    }
+  }
+}

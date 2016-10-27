@@ -1,0 +1,47 @@
+header{
+  nav{
+    @include display(flex);
+    align-items: center;
+    height: 70px;
+    div{
+      width: 50%;
+      padding: 0 20px;
+    }
+    ul{
+      @include display(flex);
+      @include justify-content(space-between);
+      li{
+        list-style: none;
+        a{
+          font:{
+            family: Sen, sans-serif;
+            size: 18px;
+          }
+          color: #4a4a4a;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .header-image{
+    width: 100vw;
+    height: 350px;
+    background:{
+      repeat: no-repeat;
+    }
+    @include display(flex);
+    align-items: center;
+    h1{
+      color: #fff;
+      font:{
+        size: 72px;
+        family: Sen, sans-serif;
+        weight: 200;
+      }
+      margin: auto;
+
+      width: 520px;
+
+    }
+  }
+}

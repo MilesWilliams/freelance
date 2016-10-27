@@ -1,0 +1,24 @@
+.home{
+  .about-info{
+    padding: 0 40px;
+    h1{
+
+    }
+    .content-wrapper{
+      @include outer-container(100%);
+      div{
+        @include span-columns(4);
+        max-width: 425px;
+      }
+    }
+  }
+  .cta-image{
+    width: 100%;
+    background:{
+      image: url('_build/img/home-cta.png');
+      position: center;
+      repeat: no-repeat;
+    };
+    height: 350px;
+  }
+}
