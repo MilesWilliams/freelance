@@ -32,6 +32,7 @@ get_header();
 			get_template_part('includes/pages/page', 'archive');
 		}
 
+
 	endif;
 
 get_footer();
