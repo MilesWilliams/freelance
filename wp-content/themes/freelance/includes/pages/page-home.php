@@ -21,3 +21,6 @@
 <section class="featured-site">
   <?php get_template_part('includes/modules/module', 'featuredSite'); ?>
 </section>
+<section class="latest-posts">
+  <?php get_template_part('includes/modules/module', 'latestPosts'); ?>
+</section>

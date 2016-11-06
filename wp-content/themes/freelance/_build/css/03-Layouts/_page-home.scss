@@ -1,24 +1,107 @@
 .home{
-  .about-info{
-    padding: 0 40px;
-    h1{
-
+    .about-info{
+        margin: 100px 0;
+        padding: 0 40px;
+        h1{
+            text-align: left;
+            margin-bottom: 0px;
+        }
+        .content-wrapper{
+            @include outer-container(1400px);
+            div{
+                @include span-columns(4);
+                max-width: 425px;
+                p{
+                    color: $darkGrey;
+                    size: 18px;
+                    line-height: 18px;
+                }
+            }
+        }
     }
-    .content-wrapper{
-      @include outer-container(100%);
-      div{
-        @include span-columns(4);
-        max-width: 425px;
+    .cta-image{
+        width: 100%;
+        background:{
+            image: url('_build/img/home-cta.png');
+            position: center;
+            repeat: no-repeat;
+        };
+        height: 350px;
+        @include display(flex);
+        align-items: center;
+
+        h2{
+            margin: auto;
+            color: #ffffff;
+            font:{
+                size: 48px;
+                weight: 400;
+            }
+        }
+    }
+    .services{
+        margin: 100px 0;
+
+      ul{
+        padding: 0;
+        @include outer-container(1400px);
+        li{
+          @include span-columns(4);
+          margin-bottom: 65px;
+          &:nth-of-type(3n){
+              margin-right: 0;
+          }
+          text-align: center;
+          .icon{
+              @include size(100px);
+              margin: auto;
+              background:{
+                  color: #333;
+                  size: cover;
+                  repeat: no-repeat;
+                  position: center;
+              }
+          }
+          h2{
+              font:{
+                  size: 24px;
+                  weight: 600;
+              }
+              text-transform: capitalize;
+              letter-spacing: 0.5px;
+          }
+          p{
+              font:{
+                  size: 18px;
+              }
+              color: $darkGrey;
+          }
+        }
       }
     }
-  }
-  .cta-image{
-    width: 100%;
-    background:{
-      image: url('_build/img/home-cta.png');
-      position: center;
-      repeat: no-repeat;
-    };
-    height: 350px;
-  }
+    .featured-site{
+        h1{
+            margin-bottom: 80px;
+        }
+        .featured-wrapper{
+            text-align: center;
+        }
+        a{
+            color: $accentPink;
+            text-transform: uppercase;
+            text-decoration: none;
+            font:{
+                size: 14px;
+                weight: 600;
+
+            }
+            padding: 10px 15px;
+            border: 2px solid $accentPink;
+            border-radius: 25px;
+            letter-spacing: 0.5px;
+        }
+    }
+    .latest-posts{
+        margin: 100px 0;
+    }
 }

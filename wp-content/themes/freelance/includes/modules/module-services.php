@@ -19,6 +19,7 @@
   $services = new WP_Query($args);
 
   if( $services->have_posts() ) : ?>
+  <h1>What we do</h1>
     <div class="services-wrapper">
       <ul>
         <?php

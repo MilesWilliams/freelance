@@ -6,9 +6,11 @@ function freelance_admin_page(){
   //Generate freelance Admin Page
 	add_menu_page( 'Freelance Theme Options', 'Freelance', 'manage_options', 'freelance_lifestyle', 'freelance_menu_theme_create_page' );
 	//Generate Studio Republika Admin Sub Pages
-	add_submenu_page('freelance_lifestyle','Freelance Theme Options','Sidebar', 'manage_options','freelance_lifestyle', 'freelance_menu_theme_create_page');
+	add_submenu_page('freelance_lifestyle','Freelance Theme Options','General', 'manage_options','freelance_lifestyle', 'freelance_menu_theme_create_page');
 
-	add_submenu_page('freelance_lifestyle','Freelance Theme options', 'Theme Options', 'manage_options', 'freelance_menu_theme', 'freelance_menu_theme_support_page');
+	add_submenu_page('freelance_lifestyle','Freelance Theme Settings', 'Theme Options', 'manage_options', 'freelance_theme_settings', 'freelance_settings_page');
+
+	add_submenu_page('freelance_lifestyle','Freelance Contact Form', 'Contact Form', 'manage_options', 'freelance_theme_contact', 'freelance_contact_form_page');
 
 	add_action('admin_init', 'freelance_custom_settings');
   }
@@ -18,38 +20,66 @@ function freelance_custom_settings(){
 	//Sidebar Options
 	register_setting('freelance-settings-group','profile_picture');
 	register_setting('freelance-settings-group','first_name');
+	register_setting('freelance-settings-group','last_name');
 	register_setting('freelance-settings-group','user_description');
 	register_setting('freelance-settings-group','twitter_handler', 'freelance_lifestyle_twitter_handler');
 	register_setting('freelance-settings-group','facebook_handler');
 	register_setting('freelance-settings-group','behance_handler');
 
-	add_settings_section('freelance-lifestyle-sidebar-option','Theme Options','freelance_lifestyle_sidebar_options','freelance_lifestyle');
+	add_settings_section('freelance-lifestyle-sidebar-option','Theme Sidebar Options','freelance_lifestyle_sidebar_options','freelance_lifestyle');
   add_settings_field('sidebar-avatar','Profile Picture','freelance_lifestyle_sidebar_avatar','freelance_lifestyle','freelance-lifestyle-sidebar-option');
-	add_settings_field('sidebar-name','Your Name','freelance_lifestyle_sidebar_name','freelance_lifestyle','freelance-lifestyle-sidebar-option');
+	add_settings_field('sidebar-name','Full Name','freelance_sidebar_name','freelance_lifestyle','freelance-lifestyle-sidebar-option');
 	add_settings_field('sidebar-description','Description','freelance_lifestyle_sidebar_description','freelance_lifestyle','freelance-lifestyle-sidebar-option');
 	add_settings_field('sidebar-twitter', 'Twitter Handler', 'freelance_lifestyle_sidebar_twitter', 'freelance_lifestyle','freelance-lifestyle-sidebar-option');
 	add_settings_field('sidebar-facebook', 'Facebook Handler', 'freelance_lifestyle_sidebar_facebook', 'freelance_lifestyle','freelance-lifestyle-sidebar-option');
 	add_settings_field('sidebar-behance', 'Behance Handler', 'freelance_lifestyle_sidebar_behance', 'freelance_lifestyle','freelance-lifestyle-sidebar-option');
+
+	/* Theme Support Options */
+	register_setting('freelance-theme-support-group','post_formats');
+	register_setting('freelance-theme-support-group','custom_logo');
+	register_setting('freelance-theme-support-group','site_title');
+	register_setting('freelance-theme-support-group','site_description');
+	register_setting('freelance-theme-support-group','logo_width');
+	register_setting('freelance-theme-support-group','logo_height');
+	register_setting('freelance-theme-support-group','custom_header');
+	register_setting('freelance-theme-support-group','custom_background');
+	register_setting('freelance-theme-support-group','automatic_feed_links');
+
+	add_settings_section('freelance-theme-options','Theme Options','freelance_theme_options','freelance_settings_page');
+	add_settings_field('post-formats','Post Formats','freelance_post_formats','freelance_settings_page','freelance-theme-options');
+	add_settings_field('custom-logo','Custom Logo and Its Settings','freelance_custom_logo','freelance_settings_page','freelance-theme-options');
+	add_settings_field('custom-header','Custom Header','freelance_custom_header','freelance_settings_page','freelance-theme-options');
+	add_settings_field('custom-background','Custom Background','freelance_custom_background','freelance_settings_page','freelance-theme-options');
+	add_settings_field('automatic-feed-links','Automatic Feed Links','freelance_automatic_feed_links','freelance_settings_page','freelance-theme-options');
+
+
+	/* Contact Form Settings */
+	register_setting('freelance-contact-options', 'activate_contact');
+	add_settings_section('freelance-contact-section', 'Contact Form', 'freelance_contact_section', 'freelance_theme_contact' );
+	add_settings_field('activate-form','Activate Contact Form ','freelance_activate_contact','freelance_theme_contact','freelance-contact-section');
+
 }
+
 function freelance_lifestyle_sidebar_avatar() {
 	$avatar = esc_attr( get_option('profile_picture'));
   	if (empty($avatar)) {
-    	echo '<input type="button" id="upload_button" class=" button button-secondary" value="Upload Profile Picture" >  <input type="hidden" id="profile_picture" name="profile_picture" value=" " />';
+    	echo '<input type="button" id="upload-button" class=" button button-secondary" value="Upload Profile Picture" >  <input type="hidden" id="profile-picture" name="profile_picture" value=" " />';
 
   	} else{
-    	echo '<input type="button" id="upload_button" class=" button button-secondary" value="Replace Profile Picture" >  <input type="hidden" id="profile_picture" name="profile_picture" value="'.$avatar.'" /> <input type="button" id="remove-picture" class=" button button-secondary" value="Remove"> ';
+    	echo '<input type="button" id="upload-button" class=" button button-secondary" value="Replace Profile Picture" >  <input type="hidden" id="profile-picture" name="profile_picture" value="'.$avatar.'" /> <input type="button" id="remove-picture" class=" button button-secondary" value="Remove"> ';
     }
 }
 function freelance_lifestyle_sidebar_options() {
 	echo 'Customize Your basic Website Information';
 }
-function freelance_lifestyle_sidebar_name() {
+function freelance_sidebar_name() {
 	$firstName = esc_attr( get_option('first_name'));
-	echo '<input type="text" name="first_name" value="'.$firstName.'" placeholder="Your Name"/> ';
+	$surName = esc_attr( get_option('last_name'));
+	echo '<input type="text" name="first_name" value="'.$firstName.'" placeholder="Your First Name"/> <input type="text" name="last_name" value="'.$surName.'" placeholder="Your Surname"/> ';
 }
 function freelance_lifestyle_sidebar_description() {
 	$description = esc_attr( get_option('user_description'));
-	echo '<textarea row="30" cols="50" type="text" name="user_description" value="'.$description.'" placeholder="Type an about you paragraph">'.$description.'</textarea><p class="description"> To be filled in*</p>';
+	echo '<textarea row="30" cols="50" type="text" name="user_description" value="'.$description.'" placeholder="Type an about you paragraph">'.$description.'</textarea>';
 };
 function freelance_lifestyle_sidebar_twitter() {
 	$twitter = esc_attr( get_option('twitter_handler'));
@@ -71,210 +101,69 @@ function freelance_lifestyle_twitter_handler( $input ) {
 	//Note: Never use echo for sanitization or variables, use return instead
 }
 
+//Calling Theme Templates for Dashboard sub menu pages
 function freelance_menu_theme_create_page(){
-	require_once( get_template_directory(). '/includes/admin/freelance-admin.php');
+	require_once( get_template_directory(). '/includes/admin/Templates/freelance-admin.php');
+}
+function freelance_settings_page(){
+	require_once( get_template_directory() . '/includes/admin/Templates/freelance-theme-support.php' );
+}
+function freelance_contact_form_page(){
+	require_once( get_template_directory() . '/includes/admin/Templates/freelance-contact-form.php' );
 }
 
-function freelance_menu_theme_support_page(){
+function freelance_custom_header(){
+	$options = get_option('custom_header');
+	$checked = ( @$options == 1 ? 'checked' : '');
+	echo '<label><input type="checkbox" id="custom_header" name="custom_header" value="1" '.$checked.' />Activate Custom Header</label>';
 
 }
-function freelance_menu_theme_settings_page(){
+function freelance_custom_logo(){
+	$siteTitle = esc_attr( get_option('site_title'));
+	$siteDescription = esc_attr( get_option('site_description'));
+	$logoWidth = esc_attr( get_option('logo_width'));
+	$logoHeight = esc_attr( get_option('logo_height'));
+	$options = get_option('custom_logo');
+	$checked = ( @$options == 1 ? 'checked' : '');
+	echo '<label><input type="checkbox" id="custom_logo" name="custom_logo" value="1" '.$checked.' />Enable Custom Logo for the Customizer</label><br/>';
+
+	if (@$options == 1) {
+		echo '<label><input type="number" id="logo_width" name="logo_width" value="'.$logoWidth.'" max="1000"/> Logo Width(px)</label><br/><label><input type="number" id="logo_height" name="logo_height" value="'.$logoHeight.'" max="1000" /> Logo Height(px)</label><br/><br/>';
+		echo '<input type="text" name="site_title" value="'.$siteTitle.'" placeholder="Enter the site title"/><br/><textarea row="30" cols="50" type="text" name="site_description" value="'.$siteDescription.'" placeholder="Enter your sites description">'.$siteDescription.'</textarea>';
+	}
+}
+function freelance_automatic_feed_links(){
+	$options = get_option('automatic_feed_links');
+	$checked = ( @$options == 1 ? 'checked' : '');
+	echo '<label><input type="checkbox" id="automatic_feed_links" name="automatic_feed_links" value="1" '.$checked.' />Enable Automatic Feed Links in the Header</label>';
 
 }
+function freelance_custom_background(){
+	$options = get_option('custom_background');
+	$checked = ( @$options == 1 ? 'checked' : '');
+	echo '<label><input type="checkbox" id="custom_background" name="custom_background" value="1" '.$checked.' />Activate Custom Background</label>';
 
-/*-----------     Shops Custom Post Type     -----------*/
-
-function servicesCustomPostType(){
-
-	$singular 	= 'Service';
-	$plural 	= 'Services';
-	$labels 	= array(
-		'name' 					      => $plural,
-		'singular_name' 		  => $singular,
-		'add_name' 			  	  => 'Add New',
-		'add_new_item' 			  => 'Add New ' . $singular,
-		'edit' 					      => 'Edit',
-		'edit_item'				    => 'Edit ' . $singular,
-		'new_item'				    => 'New ' . $singular,
-		'view'					      => 'View ' . $singular,
-		'view_item'				    => 'View ' . $singular,
-		'search_item'			    => 'Search ' . $plural,
-		'parent'				      => 'Parent ' . $singular,
-		'not_found' 			    => 'No ' . $plural . ' found',
-		'not_found_in_trash'  => 'No ' . $plural . ' in Trash',
-	);
-	$args = array(
-		'labels'			 	         => $labels,
-		'public' 				         => true,
-		'public_queryable' 	  	 => true,
-		'exclude_from_search' 	 => false,
-		'show_in_nav_menus' 	   => true,
-		'show_in_ui' 			       => true,
-		// 'show_in_menu' 			     => 'ffreelance_menu',
-		'show_in_admin_bar' 	   => true,
-		'menu_icon' 			       => 'dashicons-store',
-		'can_export' 			       => true,
-		'delete_with_user' 		   => false,
-		'hierarchical' 			     => false,
-		'query_var' 			       => true,
-		'capability_type' 		   => 'page',
-		'map_meta_cap' 			     => true,
-		// 'capabilities' => array(),
-		'rewrite' 				       => array(
-			'slug' 				         => 'services',
-			'with_front' 		       => true,
-			'pages' 			         => true,
-			'feeds' 			         => true,
-			),
-		'supports' 				       => array(
-		  'title',
-			'editor',
-			'custom_fields',
-			'thumbnail',
-			'post-formats',
-		)
-	);
-	register_post_type('services', $args);
 }
-add_action('init', 'servicesCustomPostType');
-
-
-/*-----------     Shops Custom Post Type     -----------*/
-
-function websiteCustomPostType(){
-
-	$singular 	= 'Website';
-	$plural 	= 'Websites';
-	$labels 	= array(
-		'name' 					      => $plural,
-		'singular_name' 		  => $singular,
-		'add_name' 			  	  => 'Add New',
-		'add_new_item' 			  => 'Add New ' . $singular,
-		'edit' 					      => 'Edit',
-		'edit_item'				    => 'Edit ' . $singular,
-		'new_item'				    => 'New ' . $singular,
-		'view'					      => 'View ' . $singular,
-		'view_item'				    => 'View ' . $singular,
-		'search_item'			    => 'Search ' . $plural,
-		'parent'				      => 'Parent ' . $singular,
-		'not_found' 			    => 'No ' . $plural . ' found',
-		'not_found_in_trash'  => 'No ' . $plural . ' in Trash',
-	);
-	$args = array(
-		'labels'			 	         => $labels,
-		'public' 				         => true,
-		'public_queryable' 	  	 => true,
-		'exclude_from_search' 	 => false,
-		'show_in_nav_menus' 	   => true,
-		'show_in_ui' 			       => true,
-		// 'show_in_menu' 			     => 'ffreelance_menu',
-		'show_in_admin_bar' 	   => true,
-		'menu_icon' 			       => 'dashicons-store',
-		'can_export' 			       => true,
-		'delete_with_user' 		   => false,
-		'hierarchical' 			     => false,
-		'query_var' 			       => true,
-		'capability_type' 		   => 'page',
-		'map_meta_cap' 			     => true,
-		// 'capabilities' => array(),
-		'rewrite' 				       => array(
-			'slug' 				         => 'websites',
-			'with_front' 		       => true,
-			'pages' 			         => true,
-			'feeds' 			         => true,
-			),
-		'supports' 				       => array(
-		  'title',
-			'editor',
-			'custom_fields',
-			'thumbnail',
-			'post-formats',
-		)
-	);
-	register_post_type('websites', $args);
+function freelance_theme_options(){
+	echo "Activate and Deactivate Theme Settings";
 }
-add_action('init', 'websiteCustomPostType');
-
-/*-----------     Featured Website Custom Taxonomies     -----------*/
-
-function featuredWebsiteTaxonomy(){
-	$singular 	= 'Taxonomy';
-	$plural 		= 'Taxonomies';
-	$labels 		= array(
-		'name' 											=> $plural,
-		'singular_name' 						=> $singular,
-		'search_items'							=> 'Search ' . $plural,
-		'popular_items'							=> 'Popular ' . $plural,
-		'all_items'									=> 'All ' . $plural,
-		'parent_item'								=> 'Parent Field',
-		'parent_item_colon'					=> 'Parent Field:',
-		'edit_item'									=> 'Edit ' . $singular,
-		'update_item'								=> 'Update ' . $singular,
-		'add_new_item' 							=> 'Add New ' . $singular .' Name',
-		'new_item_name'							=> 'New ' . $singular,
-		'seperate_items_with_comas' => 'Seperate ' . $plural . ' with commas',
-		'add_or_remove_items' 			=> 'Add or remove ' . $plural,
-		'choose_from_most_used' 		=> 'Choose from the most used' . $plural,
-		'not_found' 								=> 'No ' . $plural . ' found',
-		'menu_name'									=> $plural,
-	);
-	$args = array(
-			'hierarchical'      	=> true,
-			'labels'            	=> $labels,
-			'show_ui'           	=> true,
-			'show_admin_column' 	=> true,
-			'query_var'        		=> true,
-			'public'							=> false,
-			'capability_type' 		=> 'page',
-			'capabilities' 				=> array(
-				'manage_terms',
-				),
-			'rewrite' 						=> array(
-				'slug' 							=> 'featured'
-			),
-	);
-	register_taxonomy( 'featured', array('websites'), $args );
+function freelance_post_formats(){
+	$options = get_option('post_formats');
+	$formats = array('aside', 'gallery', 'link', 'image', 'quote', 'status', 'video', 'audio', 'chat');
+	$output = '';
+	foreach ($formats as $format) {
+		$checked = ( @$options[$format] == 1 ? 'checked' : '');
+		$output .= '<label><input type="checkbox" id="'.$format.'" name="post_formats['.$format.']" value="1" '.$checked.' />'.$format.'</label><br>';
+	}
+	echo $output;
 }
-add_action('init', 'featuredWebsiteTaxonomy');
 
-/*-----------     Featured Website Custom Taxonomies     -----------*/
-
-function tagsTaxonomy(){
-	$singular 	= 'Tag';
-	$plural 		= 'Tags';
-	$labels 		= array(
-		'name' 											=> $plural,
-		'singular_name' 						=> $singular,
-		'search_items'							=> 'Search ' . $plural,
-		'popular_items'							=> 'Popular ' . $plural,
-		'all_items'									=> 'All ' . $plural,
-		'parent_item'								=> 'Parent Field',
-		'parent_item_colon'					=> 'Parent Field:',
-		'edit_item'									=> 'Edit ' . $singular,
-		'update_item'								=> 'Update ' . $singular,
-		'add_new_item' 							=> 'Add New ' . $singular .' Name',
-		'new_item_name'							=> 'New ' . $singular,
-		'seperate_items_with_comas' => 'Seperate ' . $plural . ' with commas',
-		'add_or_remove_items' 			=> 'Add or remove ' . $plural,
-		'choose_from_most_used' 		=> 'Choose from the most used' . $plural,
-		'not_found' 								=> 'No ' . $plural . ' found',
-		'menu_name'									=> $plural,
-	);
-	$args = array(
-			'hierarchical'      	=> true,
-			'labels'            	=> $labels,
-			'show_ui'           	=> true,
-			'show_admin_column' 	=> true,
-			'query_var'        		=> true,
-			'public'							=> false,
-			'capability_type' 		=> 'page',
-			'capabilities' 				=> array(
-				'manage_terms',
-				),
-			'rewrite' 						=> array(
-				'slug' 							=> 'tag'
-			),
-	);
-	register_taxonomy( 'tag', array('websites'), $args );
+function freelance_contact_section(){
+	echo 'Activate and Deactivate the Built-in Contact Form';
 }
-add_action('init', 'tagsTaxonomy');
+function freelance_activate_contact(){
+	$options = get_option('activate_contact');
+	$checked = ( @$options == 1 ? 'checked' : '');
+	echo '<label><input type="checkbox" id="activate_contact" name="activate_contact" value="1" '.$checked.' /></label>';
+
+}

@@ -1,9 +1,0 @@
-.services-wrapper{
-  ul{
-    padding: 0;
-    @include outer-container(100%);
-    li{
-      @include span-columns(4);
-    }
-  }
-}

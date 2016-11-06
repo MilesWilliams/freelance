@@ -1,0 +1,23 @@
+p{
+    color: #9297A3;
+
+}
+h1, h2, h3{
+    color: #333743;
+}
+a, p, h1,h2,h3,h4{
+    font-family: San Francisco,'Raleway', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+h1{
+    text-align: center;
+    text-transform: capitalize;
+    font:{
+        size: 48px;
+    }
+    letter-spacing: 0.5px;
+    margin-bottom: 70px;
+}
+
+$darkGrey : #4a4a4a;
+$accentPink : #F42267;

@@ -19,17 +19,18 @@ get_header();
 		/* Start the Loop */
 		while ( have_posts() ) : the_post();
 			if( is_front_page() ){
-          get_template_part( 'includes/pages/page', 'home' );
+          		get_template_part( 'includes/pages/page', 'home' );
 					}
-					elseif( is_singular() ){
-						if(is_page('blog')){
-							get_template_part( 'includes/pages/page', 'blog' );
+					elseif ( is_singular() ) {
+						if( is_page('blog') ){
+							get_template_part('includes/pages/page', 'blog');
 						}
-						if (is_single()) {
-							get_template_part( 'includes/pages/page', 'post' );
-						}
+
 					}
 		endwhile;
+		if (is_archive() ) {
+			get_template_part('includes/pages/page', 'archive');
+		}
 
 	endif;
 

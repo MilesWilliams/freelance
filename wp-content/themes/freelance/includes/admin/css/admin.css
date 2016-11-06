@@ -1,0 +1,10 @@
+body {
+  background-color: honeydew;
+  color: #000; }
+
+.profile-picture {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 150px;
+  width: 150px; }

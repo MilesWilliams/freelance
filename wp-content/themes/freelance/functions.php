@@ -1,13 +1,10 @@
 <?php
 
-  /**
-  	* Woocommerce theme support declaration
+  /*
+  **This php file includes the functions to remove
+  **the wordpress version numbers to secure the site for hackers
   */
-  add_action( 'after_setup_theme', 'woocommerce_support' );
-
-  function woocommerce_support() {
-    add_theme_support( 'woocommerce' );
-  }
+  require get_template_directory() . '/includes/admin/cleanup.php';
 
   if ( ! function_exists( 'freelance_setup' ) ) :
   /**
@@ -25,145 +22,30 @@
     	 * to change 'freelance' to the name of your theme in all the template files.
     	 */
     	load_theme_textdomain( 'freelance', get_template_directory() . '/languages' );
-
-    	// Add default posts and comments RSS feed links to head.
-    	add_theme_support( 'automatic-feed-links' );
-
-    	/*
-    	 * Let WordPress manage the document title.
-    	 * By adding theme support, we declare that this theme does not use a
-    	 * hard-coded <title> tag in the document head, and expect WordPress to
-    	 * provide it for us.
-    	 */
-    	add_theme_support( 'title-tag' );
-
-    	/*
-    	 * Enable support for Post Thumbnails on posts and pages.
-    	 *
-    	 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-    	 */
-    	add_theme_support( 'post-thumbnails' );
-
-    	// This theme uses wp_nav_menu() in one location.
-    	register_nav_menus( array(
-    		'primary' => esc_html__( 'Primary', 'freelance' ),
-    	) );
-
-    	register_nav_menus( array(
-    		'secondary' => esc_html__( 'Footer', 'freelance' ),
-    	) );
-      register_nav_menus( array(
-        'megaMenu' => esc_html__( 'Mega Menu', 'freelance'),
-      ) );
-
-    	/*
-    	 * Switch default core markup for search form, comment form, and comments
-    	 * to output valid HTML5.
-    	 */
-    	add_theme_support( 'html5', array(
-    		'search-form',
-    		'comment-form',
-    		'comment-list',
-    		'gallery',
-    		'caption',
-    	) );
-
-      add_theme_support( 'post-formats', array(
-        'aside',
-        'image',
-        'video',
-        'quote',
-        'link',
-        'gallery',
-        'status',
-        'audio',
-        'chat',
-      ) );
-
-      add_theme_support( 'custom-logo', array(
-      	'height'      => 50,
-      	'width'       => 100,
-      	'flex-height' => false,
-      	'flex-width'  => false,
-      	'header-text' => array( 'freelance', 'A responsive ecommerce site' ),
-      ) );
-
-    /* Added Header theme support for the customizer*/
-    add_theme_support( 'custom-background' );
-
-    function custom_background_size( $wp_customize ) {
-
-    	// Add the "panel" (Section).
-    	// If this section already exists, comment the next 3 lines out.
-    	$wp_customize->add_section( 'theme_settings', array(
-    		'title' => __( 'Theme Settings' ),
-    	) );
-
-    	// If they haven't set the background image, don't show these controls.
-    	if ( ! get_theme_mod( 'background_image' ) ) {
-    		return;
-    	}
-
-    	// Add your setting.
-    	$wp_customize->add_setting( 'default-size', array(
-    		'default' => 'inherit',
-    	) );
-
-    	// Add your control box.
-    	$wp_customize->add_control( 'default-size', array(
-    		'label'      => __( 'Background Image Size' ),
-    		'section'    => 'theme_settings',
-    		'settings'   => 'default-size',
-    		'priority'   => 200,
-    		'type' => 'radio',
-    		'choices' => array(
-    			'cover' => __( 'Cover' ),
-    			'contain' => __( 'Contain' ),
-    			'inherit' => __( 'Inherit' ),
-    		)
-    	) );
-    }
-
-    add_action( 'customize_register', 'custom_background_size' );
-
-    function custom_background_size_css() {
-    	$background_size = get_theme_mod( 'default-size', 'inherit' );
-    	echo '<style> body.custom-background { background-size: '.$background_size.'; } </style>';
-    }
-
-    add_action( 'wp_head', 'custom_background_size_css', 999 );
-
-
-    /* Customizer theme header fallback for older wordpress versions */
-      global $wp_version;
-
-      if ( version_compare( $wp_version, '3.4', '>=' ) ) :
-      	add_theme_support( 'custom-header' );
-      else :
-      	add_custom_image_header( $wp_head_callback, $admin_head_callback );
-      endif;
-
-    	// Set up the WordPress core custom background feature.
-    	add_theme_support( 'custom-background', apply_filters( 'freelance_custom_background_args', array(
-    		'default-color' => 'ffffff',
-    		'default-image' => '',
-    	) ) );
     }
   endif;
   add_action( 'after_setup_theme', 'freelance_setup' );
 
-  //Below required script enqueues the admin document which handles all the cpt's
-  require get_template_directory() . '/includes/admin/admin-functions.php';
+  //Below are the required scripts which handles all the cpt's and the freelance admin page
+	require get_template_directory() . '/includes/admin/admin-functions.php';
+	require get_template_directory() . '/includes/admin/enqueue.php';
+	require get_template_directory() . '/includes/admin/theme-support.php';
+	require get_template_directory() . '/includes/admin/custom-post-type.php';
+	require get_template_directory() . '/includes/admin/walker.php';
+	require get_template_directory() . '/includes/admin/ajax.php';
+
 
   /**
    * Enqueue scripts and styles.
    */
   function freelance_scripts() {
   	wp_enqueue_style( 'freelance-style', get_stylesheet_uri() );
-  	wp_register_script('freelance_initJS', get_template_directory_uri() . '/_build/js/min/init-min.js', array('jquery'),'1.0.0', true);
-  	wp_enqueue_script('freelance_initJS');
-    wp_register_script('freelance_jquery', get_stylesheet_directory_uri() . '/_build/js/min/jquery-3.1.1.min.js', array(),'', false);
-    wp_enqueue_script('freelance_jquery');
+
+    wp_deregister_script('jquery');
+    wp_register_script('jquery', get_stylesheet_directory_uri() . '/_build/js/min/jquery-3.1.1.min.js', false, '3.1.1', true);
+    wp_enqueue_script('jquery');
+    wp_register_script('freelance_initJS', get_template_directory_uri() . '/_build/js/min/init-min.js', array('jquery'),'1.0.0', true);
+    wp_enqueue_script('freelance_initJS');
   }
   add_action( 'wp_enqueue_scripts', 'freelance_scripts' );
 
@@ -174,7 +56,7 @@
     register_sidebar( array(
       'name' => __( 'Aside Sidebar', 'aside-sidebar' ),
       'id' => 'sidebar-1',
-      'description' => __( 'A sidebar to have the product categories', 'theme-slug' ),
+      'description'   => __( 'A sidebar to have the product categories', 'theme-slug' ),
       'before_widget' => '<li id="%1$s" class="widget %2$s">',
     	'after_widget'  => '</li>',
     	'before_title'  => '<h2 class="widgettitle">',
@@ -238,40 +120,43 @@
   /**
   	* Converting the featured image into a url to be used as a background image, as well as if there are any attachments.
   */
-  function freelance_get_attachment( $num= 1){
-   	$output = ' ';
-   	if (has_post_thumbnail() && $num == 1):
-  		$output = wp_get_attachment_url( get_post_thumbnail_id( get_the_ID() ) );
-  		else:
-  		 	$attachments = get_posts( array(
-  				'post_type' 	=> 'attachment',
-  				'numberposts' 	=> $num,
-  				'post_parent' 	=> get_the_ID()
-  			) );
-  			if( $attachments && $num == 1):
-  				foreach ($attachments as $attachment) :
-  					$output= wp_get_attachment_url( $attachment->ID);
-  				endforeach;
-  				elseif( $attachments && $num > 1 ):
-  					$output = $attachments;
-  			endif;
-  			wp_reset_postdata();
-  	endif;
+function freelance_get_attachment( $num= 1){
+	$output = ' ';
+	if (has_post_thumbnail() && $num == 1):
+		$output = wp_get_attachment_url( get_post_thumbnail_id( get_the_ID() ) );
+		else:
+		 	$attachments = get_posts( array(
+				'post_type' 	=> 'attachment',
+				'numberposts' 	=> $num,
+				'post_parent' 	=> get_the_ID()
+			) );
+			if( $attachments && $num == 1):
+				foreach ($attachments as $attachment) :
+					$output= wp_get_attachment_url( $attachment->ID);
+				endforeach;
+				elseif( $attachments && $num > 1 ):
+					$output = $attachments;
+			endif;
+			wp_reset_postdata();
+	endif;
 
-  	return $output;
-  }
+	return $output;
+}
 
-  function freelance_set_post_views($postID) {
-    $count_key = 'wpb_post_views_count';
-    $count = get_post_meta($postID, $count_key, true);
-    if($count==''){
-        $count = 0;
-        delete_post_meta($postID, $count_key);
-        add_post_meta($postID, $count_key, '0');
-    }else{
-        $count++;
-        update_post_meta($postID, $count_key, $count);
-    }
+function freelance_set_post_views($postID) {
+	$count_key = 'wpb_post_views_count';
+	$count = get_post_meta($postID, $count_key, true);
+	if($count==''){
+	    $count = 0;
+	    delete_post_meta($postID, $count_key);
+	    add_post_meta($postID, $count_key, '0');
+	}else{
+	    $count++;
+	    update_post_meta($postID, $count_key, $count);
+	}
+
 }
 //To keep the count accurate, lets get rid of prefetching
 remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+
+add_filter( 'jetpack_development_mode', '__return_true' );

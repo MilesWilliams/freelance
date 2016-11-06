@@ -1,0 +1,41 @@
+.share-wrapper{
+    @include display(flex);
+    position: relative;
+    .share-text{
+        @include display(flex);
+        align-items: center;
+        cursor: pointer;
+        height: 30px;
+        p{
+            line-height: 25px;
+        }
+    }
+    .hidden-menu{
+        position: absolute;
+        top: -30px;
+        left: -20px;
+        padding: 0;
+        height: 0;
+        opacity: 0;
+        @include display(flex);
+        @include transition(opacity, 0.3s, ease-in-out);
+        @include transition(height, 0.5s, ease-in-out, 0.2s);
+        li{
+            list-style: none;
+            padding: 0 10px;
+
+        }
+        .svg{
+            @include size(25px);
+            cursor: pointer;
+        }
+
+        &.reveal{
+
+            opacity: 1;
+            height: 25px;
+            @include transition(opacity, 0.3s, ease-in-out);
+            @include transition(height, 0.5s, ease-in-out, 0.2s);
+        }
+    }
+}

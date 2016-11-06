@@ -1,62 +1,60 @@
-<section>
+<?php
+/*
 
+@package freelance
 
-		<?php // Display blog posts on any page @ http://blog:8888/blog
-		 get_search_form();
-		$temp = $wp_query; $wp_query= null;
-		$wp_query = new WP_Query(); $wp_query->query('showposts=5' . '&paged='.$paged);
-		while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
-		<article>
-		<div class="post-image"><?php the_post_thumbnail(); ?></div>
-		<div class="meta-content">
-			<p>
-				<?php  the_author(); ?><span>/</span> <?php echo get_the_date('F j Y'); ?>
-			</p>
+    ==============================
+        Theme Blog Page
+    ==============================
+*/
+?>
+<section class="blog">
+	<?php if ( is_paged() ){ ?>
+		<div class="button-container load-previous">
+			<a id="freelance-ajax-load" class="btn-load" data-prev="1" data-page="<?php echo freelance_check_paged(1); ?>" data-url="<?php echo admin_url('admin-ajax.php'); ?>">
+				<span class="freelance-loading-icon"></span>
+				<span class="freelance-ajax-text">Load Previous</span>
+			</a>
 		</div>
-		<h1><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h1>
-		<?php the_excerpt(); ?>
-		<div class="post-tags">
-			<?php $tags = get_the_tags();
-				foreach ($tags as $tag) { ?>
-					<span><?php echo $tag->name; ?></span>
-				<?php }
+	<?php } ?>
+	<div class="freelance-posts-container">
 
-			?>
-			<?php  get_the_tags(); ?>
-		</div>
-		<div class="social-stats">
-			<div class="like-stats">
+		<?php // Display blog posts @ http://blog:8888/blog
+		  global $post;
 
+		  $paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+		  $count = 2;
+		  $args = array(
+		    'post_type' 		=> 'post',
+			'post_status'		=> 'published',
+		    'order'             => 'DEC',
+		    'posts_per_page' 	=> $count,
+			'paged'				=> $paged,
+		  );
+		  $blogPosts = new WP_Query($args);
+		if( $blogPosts->have_posts() ): ?>
+			<div class="page-limit" data-page="/blog<?php $_SERVER["REQUEST_URI"] .  freelance_check_paged(1); ?>/">
+				<?php while ($blogPosts->have_posts()) : $blogPosts->the_post();
+					//$class = 'reveal';
+					//set_query_var( 'post-class', $class );
+					get_template_part('includes/post-format/content', get_post_format() );
+
+				endwhile; ?>
 			</div>
-			<div class="comment-stats">
-				<?php get_template_part('_build/icons/comment') . comments_number( '0', '1', '%' );?>
-			</div>
-		</div>
-		</article>
-		<?php endwhile; ?>
-
-
-		<?php if ($paged > 1) { ?>
-
-		<nav id="nav-posts">
-			<div class="prev"><?php next_posts_link('&laquo; Previous Posts'); ?></div>
-			<div class="next"><?php previous_posts_link('Newer Posts &raquo;'); ?></div>
-		</nav>
-
-		<?php } else { ?>
-
-		<nav id="nav-posts">
-			<div class="prev"><?php next_posts_link('&laquo; Previous Posts'); ?></div>
-		</nav>
-
-		<?php } ?>
-
-		<?php wp_reset_postdata(); ?>
-	</section>
-	<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
-		<aside id="sidebar">
-			<ul>
-				<?php dynamic_sidebar( 'sidebar-1' ); ?>
-			</ul>
-		</aside>
-	<?php endif; ?>
+		<?php endif;
+		wp_reset_postdata(); ?>
+	</div>
+	<div class="button-container">
+		<a id="freelance-ajax-load" class="btn-load" data-page="<?php echo freelance_check_paged(1); ?>" data-url="<?php echo admin_url('admin-ajax.php'); ?>">
+			<span class="freelance-loading-icon"></span>
+			<span class="freelance-ajax-text">Load More</span>
+		</a>
+	</div>
+</section>
+<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+	<aside id="sidebar">
+		<ul>
+			<?php dynamic_sidebar( 'sidebar-1' ); ?>
+		</ul>
+	</aside>
+<?php endif; ?>

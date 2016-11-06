@@ -17,6 +17,7 @@
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<?php if ( is_singular() && pings_open( get_queried_object() ) ) : ?>
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:100,400,500,600,700" rel="stylesheet">
 	<?php endif; ?>
 	<?php wp_head(); ?>
 </head>

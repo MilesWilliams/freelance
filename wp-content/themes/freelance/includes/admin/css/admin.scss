@@ -1,0 +1,14 @@
+@import "bourbon";
+body{
+  background-color: honeydew;
+  color: #000;
+}
+
+.profile-picture{
+  background:{
+    repeat: no-repeat;
+    position: center;
+    size: cover;
+  }
+  @include size(150px);
+}

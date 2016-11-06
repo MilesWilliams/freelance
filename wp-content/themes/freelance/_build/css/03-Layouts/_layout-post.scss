@@ -1,0 +1,102 @@
+#latest-posts{
+    .icon{
+        @include size(25px);
+        .svg{
+            g{
+                fill: #4A4A4A;
+            }
+        }
+    }
+    ul{
+        padding: 0;
+        @include outer-container(1400px);
+        .single-post{
+            @include span-columns(4 of 12);
+            list-style: none;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+            a{
+                text-decoration: none;
+                color: #333743;
+            }
+            .post-image{
+                height: 258px;
+                background:{
+                    size: cover;
+                    repeat: no-repeat;
+                    position: center;
+                }
+            }
+            .posted-by{
+                color: #5C8DDE;
+            }
+            .post-info{
+                padding: 0 30px;
+                p{
+                    text-decoration: none;
+                }
+            }
+            .category-wrapper{
+                margin-bottom: 10px;
+                padding: 0 30px;
+                .cat{
+                    border: 2px solid #C8C8C8;
+                    border-radius: 25px;
+                    height: 25px;
+                    padding: 1px 10px;
+                    margin: 0 10px 0 0;
+                    a{
+                        font-size: 12px;
+                    }
+                }
+            }
+            .post-meta{
+                @include display(flex);
+                align-items: center;
+                line-height: 30px;
+                padding: 0 30px;
+                >span{
+                    @include size(10px);
+                    background-color: #eee;
+                    border-radius: 50%;
+                    margin: 0 20px;
+                }
+                >*{
+                    width: 33%;
+                }
+            }
+            .post-stats{
+                @include display(flex);
+                align-items: center;
+                @include justify-content(space-around);
+                .icon{
+                    margin-right: 5px;
+                }
+                .likes, .comments{
+                    @include display(flex);
+                }
+                .likes{
+                    .icon-likes{
+                        background:{
+                            image: url('_build/icons/icon-likes.svg');
+                            repeat: no-repeat;
+                            size: cover;
+                        }
+
+                    }
+                }
+                .comments{
+                    align-items: center;
+                    @include justify-content(space-around);
+                    .icon-comment{
+                        background:{
+                            image: url('_build/icons/icon-comment.svg');
+                            repeat: no-repeat;
+                            size: cover;
+                        }
+                        height: 17px;
+                    }
+                }
+            }
+        }
+    }
+}

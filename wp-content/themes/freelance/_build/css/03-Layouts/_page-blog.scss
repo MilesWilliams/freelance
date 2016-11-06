@@ -1,7 +1,64 @@
+
+.freelance-posts-container{
+		article{
+			@include transition( all 320ms ease-in-out);
+			@include transform( translateY( 100px ) );
+			opacity: 0;
+
+			&.reveal{
+			@include transform( translateY( 0px ) );
+			opacity: 1;
+			}
+		}
+}
 .blog{
-  .header-image{
-    background:{
-      image: url('_build/img/blog-header.png') !important;
+
+    .button-container{
+        text-align: center;
+        .btn-load{
+            text-decoration: none;
+			cursor: pointer;
+			@include display(flex);
+			@include flex-direction(column);
+		    margin: auto;
+		    align-items: center;
+			width: 200px;
+			opacity: 0.7;
+			font-size: 24px;
+			@include transition(all 0.3s ease-in-out);
+            &:hover,
+			&:focus,
+			&.loading{
+				opacity: 1;
+				@include transition(all 0.3s ease-in-out);
+            }
+			&.loading{
+				cursor: default;
+            }
+			.freelance-loading-icon{
+				background:{
+					image: url('_build/icons/load-more.svg');
+					repeat: no-repeat;
+					position: center;
+					size: cover;
+				}
+				opacity: 0;
+				@include size(80px);
+			    display: inline-block;
+				&.spin{
+					opacity: 1;
+				}
+			}
+        }
     }
-  }
+	.load-previous{
+		margin-top: 40px;
+	}
+}
+
+.spin{
+	animation-name: spin;
+	animation-duration: 1000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
 }
